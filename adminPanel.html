@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<style type="text/css">
+			.input-group {
+				margin-bottom: 10px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<div id="main" style="margin-top: 20px;">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="inputGroup-sizing-default">地址</span>
+					</div>
+					<input type="text" class="form-control" id="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" value="192.168.123.198:8899">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="inputGroup-sizing-default">制单号</span>
+					</div>
+					<select id="prdno" class="form-control">
+
+					</select>
+
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="inputGroup-sizing-default">款号</span>
+					</div>
+					<input type="text" class="form-control" id="facno" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+				</div>
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="inputGroup-sizing-default">制单数量</span>
+					</div>
+					<input type="text" class="form-control" id="prdnum" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+				</div>
+				<table id="tb1" style="font-size: 12px; text-align: center; display: none;">
+					<tr>
+						<th style="width: 40px;">款号</th>
+						<th style="width: 80px;">工序</th>
+						<th style="width: 80px;">生产数</th>
+						<th style="width: 80px;">生产率</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+	$("#prdno").click(function() {
+		//		var prdno =$("#prdno").val();
+		var path = 'http://' + $("#address").val() + '/getprd';
+		$.ajax({
+			url: path,
+			//				data: prdno,
+			async: false,
+			contentType: 'application/json',
+			type: 'post',
+			success: function(data) {
+				$("#prdno").empty();
+				$("#prdno").append("<option value='0'>请选择</option>")
+				var t = data;
+				var arr = eval('(' + t + ')');
+				for(var i = 0; i < arr.length; i++) {
+					$("#prdno").append("<option value='" + arr[i].prdno + "'>" + arr[i].prdno + "</option>")
+				}
+			},
+			error: function(errorThrown) {
+				alert("出错啦~~~~" + errorThrown.statusText);
+			}
+
+		})
+	})
+	$("#prdno").blur(function() {
+		var path = 'http://' + $("#address").val() + '/getfacother';
+		$("#facno").val("");
+		$("#prdnum").val("");
+		$.ajax({
+			url: path,
+			data: $("#prdno").val(),
+			async: false,
+			contentType: 'application/json',
+			type: 'post',
+			success: function(data) {
+					var prd = JSON.parse(data)
+					$("#facno").val(prd.facno);
+					$("#prdnum").val(prd.prdnum);
+			},
+			error: function(errorThrown) {
+				alert("出错啦~~~~" + errorThrown.statusText);
+			}
+
+		})
+		$("#tb1").show();
+		var path2 = 'http://' + $("#address").val() + '/getfac';
+		$.ajax({
+			url: path2,
+			data: $("#prdno").val(),
+			async: false,
+			contentType: 'application/json',
+			type: 'post',
+			success: function(data) {
+					var t = data;
+					var arr = eval('(' + t + ')');
+					for(var i = 0; i < arr.length; i++) {
+						//					alert(arr[i].item);
+						var item = "";
+						if(arr[i].item == null) {
+							item = "无"
+						} else {
+							item = arr[i].prdmoedl.descn;
+						}
+						$("#tb1").append("<tr style='border-bottom: 1px solid black;'><td>" + arr[i].facno + "</td><td>" + item + "</td><td>" + arr[i].qty + "</td><td>" + (arr[i].qty/arr[i].prdn.prdnum)*100 + "%</td></tr>");
+					}
+			},
+			error: function(errorThrown) {
+				alert("出错啦~~~~" + errorThrown.statusText);
+			}
+
+		})
+	})
+</script>

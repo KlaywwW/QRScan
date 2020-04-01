@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+	</head>
+	<style type="text/css">
+		#bcid {
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			top: -10px;
+			left: 0px;
+			text-align: center;
+		}
+		
+		#shu .input-group {
+			margin-bottom: 5px;
+			margin-top: 5px;
+		}
+		
+		#empity {
+			display: none;
+			width: 100%;
+			height: 190px;
+		}
+	</style>
+
+	<body>
+
+		<div class="container">
+			<div id="bcid">
+			</div>
+
+			<a href="javascript:void(0)" style="position: fixed;top: 30px; right: 10px;display: none;" onclick="cancel()" id="close">
+				<img src="img/x3.svg" alt="" width="30" height="30">
+			</a>
+			<div style="display: block;" id="main">
+
+				<div style="position: relative;width: 100%;">
+					<div id="shu" style="margin-top: 20px">
+					
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="inputGroup-sizing-default">地址</span>
+							</div>
+							<input type="text" class="form-control" id="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+						</div>
+						<div class="input-group">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="inputGroup-sizing-default">工號</span>
+							</div>
+							<input type="text" class="form-control" id="jobNum" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+							<div class="input-group-prepend">
+								<span class="input-group-text" id="inputGroup-sizing-default">姓名</span>
+							</div>
+							<input type="text" class="form-control" id="name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+						</div>
+						
+						<div class="row">
+						<button type="button" class="btn btn-primary btn-block col-5 offset-1" onclick="setItemFun()">保存设置</button>
+						<button type="button" class="btn btn-secondary btn-block col-5" onclick="startRecognize()" style="margin-top: 0px;">
+					<img src="img/sao2.svg" alt="" width="30" height="35" style="margin-right: 10px;"><span>扫一扫</span></button>
+					</div>
+						<div class="input-group">
+							<input type="date" id="starttime" class="form-control">
+							<div class="input-group-prepend">
+								<span class="input-group-text">至</span>
+							</div>
+							<input type="date" id="endtime" class="form-control">
+						</div>
+						<div class="row">
+							<button type="button" class="btn btn-primary btn-lg btn-block col-5 offset-1" onclick="getinfoBydate()">汇总查询</button>
+							<button type="button" class="btn btn-primary btn-lg btn-block col-5" onclick="getinfo()" style="margin-top: 0px;">当日扫码明细</button>
+						</div>
+					</div>
+					
+					<div id="tb1" style="display: none; margin-top: 10px;">
+						<table style="font-size: 12px; text-align: center; ">
+							<thead>
+								<tr style="border: 1px solid black;">
+									<th>工号</th>
+									<th>制单</th>
+									<th>款号</th>
+									<th>扎号</th>
+									<th>工序</th>
+									<th>数量</th>
+								</tr>
+							</thead>
+							<tbody id="tbody1">
+
+							</tbody>
+						</table>
+
+					</div>
+					<div id="tb2" style="display: none;margin-top: 10px;">
+						<table style="font-size: 12px; text-align: center;">
+							<thead>
+								<tr style="border: 1px solid black;">
+									<th>制单</th>
+									<th>款号</th>
+									<th>工序</th>
+									<th>总量</th>
+									<th>时间</th>
+									<th>操作</th>
+								</tr>
+							</thead>
+							<tbody id="tbody2">
+							</tbody>
+						</table>
+						
+					</div>
+					<div id="tb3" style="display: none; margin-top: 10px;">
+					
+						<table style="font-size: 12px; text-align: center; ">
+							<thead>
+								<tr style="border: 1px solid black;">
+									<th>制单</th>
+									<th>款号</th>
+									<th>床号</th>
+									<th>扎号</th>
+									<th>工序</th>
+									<th>数量</th>
+								</tr>
+							</thead>
+							<tbody id="tbody3">
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="js/common.js"></script>
+<script src="js/immersed.js"></script>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+	var scan = null;
+
+	function startRecognize() {
+		var address = document.getElementById("address").value;
+		var jobNum = document.getElementById("jobNum").value;
+//		var item =document.getElementById("item").value;
+		if(address == "" || address == null || jobNum == "" || jobNum == null) {
+			alert("请填写完整信息后扫描");
+		} else {
+			if(window.plus) {
+				var filter;
+				//自定义的扫描控件样式  
+				var styles = {
+
+				}
+				//扫描控件构造  
+				scan = new plus.barcode.Barcode('bcid', filter, styles);
+				scan.onmarked = onmarked; //扫描成功
+				scan.onerror = onerror; //扫描错误
+
+				scan.start(); //开始
+			} else {
+				document.addEventListener('plusready', function() {
+					var filter;
+					//自定义的扫描控件样式  
+					var styles = {
+						scanbarColor: '#1DA7FF',
+						position: 'static',
+						frameColor: '#1DA7FF'
+					}
+					//扫描控件构造  
+					scan = new plus.barcode.Barcode('bcid', filter, styles);
+					scan.onmarked = onmarked; //扫描成功
+					scan.onerror = onerror; //扫描错误
+
+					scan.start(); //开始
+				}, false);
+
+			}
+			document.getElementById("main").style.display = "none";
+			document.getElementById("close").style.display = "block";
+		}
+	};
+
+	function onerror(e) { //错误弹框
+		alert(e);
+	};
+
+	function onmarked(type, result) { //这个是扫描二维码的回调函数，type是扫描二维码回调的类型
+		var addre = document.getElementById("address").value
+		if(window.plus) {
+			var text = '';
+			switch(type) { //QR,EAN13,EAN8都是二维码的一种编码格式,result是返回的结果
+				case plus.barcode.QR:
+					text = 'QR: ';
+					break;
+				case plus.barcode.EAN13:
+					text = 'EAN13: ';
+					break;
+				case plus.barcode.EAN8:
+					text = 'EAN8: ';
+					break;
+			}
+			
+			var splitstr = result.split("@");
+			if($("#facno").val()==splitstr[1]){
+				addinfo(result);
+			}else{
+				alert("款号不正确！");
+			}
+			scan.close();
+//			addinfo(result);
+			//获取数据
+//			getinfo();
+
+		} else {
+			document.addEventListener('plusready', function() {
+				var text = '';
+				switch(type) { //QR,EAN13,EAN8都是二维码的一种编码格式,result是返回的结果
+					case plus.barcode.QR:
+						text = 'QR: ';
+						break;
+					case plus.barcode.EAN13:
+						text = 'EAN13: ';
+						break;
+					case plus.barcode.EAN8:
+						text = 'EAN8: ';
+						break;
+				}
+				var splitstr = result.split("@");
+			if($("#facno").val()==splitstr[1]){
+				addinfo(result);
+			}else{
+				alert("款号不正确！");
+			}
+				scan.close();
+			}, false);
+
+		}
+		document.getElementById("close").style.display = "none";
+		document.getElementById("main").style.display = "block";
+		//		alert(result);
+		//		alert();
+
+	};
+
+	onload = function() {
+		// 方法体
+		if(window.plus) {
+
+			var itemLength = plus.storage.getLength();
+			if(itemLength > 0) {
+//				var key1 = plus.storage.key(0);
+				var value1 = plus.storage.getItem("address");
+
+				document.getElementById("address").value = value1;
+
+//				var key2 = plus.storage.key(1);
+				var value2 = plus.storage.getItem("jobNum");
+				document.getElementById("jobNum").value = value2;
+
+			}
+		} else {
+			document.addEventListener('plusready', function() {
+				var itemLength = plus.storage.getLength();
+				if(itemLength > 0) {
+//					var key1 = plus.storage.key(0);
+					var value1 = plus.storage.getItem("address");
+					document.getElementById("address").value = value1;
+
+//					var key2 = plus.storage.key(1);
+					var value2 = plus.storage.getItem("jobNum");
+					document.getElementById("jobNum").value = value2;
+
+				}
+			}, false);
+		}
+	}
+
+	function setItemFun() {
+		plus.storage.clear();
+		//循环插入100调数据
+		if(window.plus) {
+			clearAllItem();
+			plus.storage.setItem("address", document.getElementById("address").value);
+			plus.storage.setItem("jobNum", document.getElementById("jobNum").value);
+			var length = plus.storage.getLength();
+			alert("设置保存成功");
+		} else {
+			document.addEventListener('plusready', function() {
+				clearAllItem();
+				console.log(document.getElementById("address").value);
+				plus.storage.setItem("address", document.getElementById("address").value);
+				plus.storage.setItem("jobNum", document.getElementById("jobNum").value);
+				var length = plus.storage.getLength();
+				alert("设置保存成功");
+			}, false);
+		}
+	}
+
+	function getAllItem() {
+		if(window.plus) {
+			var itemLength = plus.storage.getLength();
+			for(var i = 0; i < itemLength; i++) {
+				var key = plus.storage.key(i);
+				var value = plus.storage.getItem(key);
+				alert("key:" + key + "-->value:" + value);
+			}
+		} else {
+			document.addEventListener('plusready', function() {
+				var itemLength = plus.storage.getLength();
+				for(var i = 0; i < itemLength; i++) {
+					var key = plus.storage.key(i);
+					var value = plus.storage.getItem(key);
+					alert("key:" + key + "-->value:" + value);
+				}
+			}, false);
+		}
+	}
+
+	function clearAllItem() {
+		if(window.plus) {
+			plus.storage.clear();
+			var num = plus.storage.getLength();
+
+		} else {
+			document.addEventListener('plusready', function() {
+				plus.storage.clear();
+				var num = plus.storage.getLength();
+		
+			}, false);
+		}
+	}
+
+	function cancel() {
+		if(window.plus) {
+			scan.cancel();
+			scan.close();
+		} else {
+			document.addEventListener('plusready', function() {
+				scan.cancel();
+				scan.close();
+			}, false);
+		}
+		document.getElementById("close").style.display = "none";
+		document.getElementById("main").style.display = "block";
+	}
+
+	
+		$("#jobNum").blur(function(){
+		var addre = document.getElementById("address").value
+		var jobNum=$("#jobNum").val();
+		var path = 'http://' + addre + '/getname';
+		$.ajax({
+				url: path,
+				data: jobNum,
+				async: false,
+				contentType: 'application/json',
+				type: 'post',
+				success: function(data) {
+//					alert(data);
+					$("#name").val(data);
+				},
+				error: function(errorThrown) {
+					alert("出错啦~~~~" + errorThrown.statusText);
+				}
+	
+			})
+	});
+
+		function addinfo(res) {
+			var addre = document.getElementById("address").value
+			var qrParam = {
+				"strs": res,
+				"jobNum": document.getElementById("jobNum").value,
+				"facnostr":document.getElementById("item").value
+			}
+			//
+			var path = 'http://' + addre + '/home';
+			$.ajax({
+				url: path,
+				data: JSON.stringify(qrParam),
+				async: false,
+				contentType: 'application/json',
+				type: 'post',
+				success: function(data) {
+					if(data>0){
+						alert("扫描成功");
+					}else{
+						alert("扫描失败");
+					}
+				},
+				error: function(errorThrown) {
+					alert("出错啦~~~~" + errorThrown.statusText);
+				}
+	
+			})
+		}
+
+	function getinfo() {
+		//查询前清空节点
+		$("#tbody1").empty();
+		$("#tb1").css("display", "block");
+		$("#tb2").css("display", "none");
+		$("#tb3").css("display", "none");
+		var address = document.getElementById("address").value;
+		var jobNum = document.getElementById("jobNum").value;
+		$.ajax({
+			url: 'http://' + address + '/get',
+			data: jobNum,
+			contentType: 'application/json',
+			type: 'POST',
+			success: function(data) {
+				var t = data;
+				var arr = eval('(' + t + ')');
+				for(var i = 0; i < arr.length; i++) {
+					//					alert(arr[i].item);
+					var item = "";
+					if(arr[i].item == null) {
+						item = "无"
+					} else {
+						item = arr[i].prdmoedl.descn;
+					}
+					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td scope='col'>" + arr[i].workno + "</td><td scope='col'>" + arr[i].prdno + "</td><td scope='col'>" + arr[i].facno + "</td><td scope='col'>" + arr[i].seq + "</td><td scope='col'>" + item + "</td><td scope='col'>" + arr[i].qty + "</td></tr>");
+				}
+			},
+			error: function(errorThrown) {
+				alert("出错啦~~~~" + errorThrown.statusText);
+			}
+
+		})
+
+	}
+
+	function getinfoBydate() {
+		$("#tbody2").empty();
+		$("#tb2").css("display", "block");
+		$("#tb1").css("display", "none");
+		$("#tb3").css("display", "none");
+		var starttime = $("#starttime").val();
+		var endtime = $("#endtime").val();
+		var jobNum = document.getElementById("jobNum").value;
+		if(starttime > endtime) {
+			alert("起始时间不能超过结束时间")
+		} else if(starttime == endtime) {
+			alert("请输入两个不同的时间")
+		} else if(jobNum == null || jobNum == "") {
+			alert("请输入工号再查询");
+		} else {
+			var address = document.getElementById("address").value;
+			var qrparam = {
+				"startDate": starttime,
+				"endDate": endtime,
+				"jobNum": jobNum
+			}
+			$.ajax({
+				type: "post",
+				url: 'http://' + address + '/getBydate',
+				async: true,
+				data: JSON.stringify(qrparam),
+				contentType: 'application/json',
+				success: function(data) {
+					var t = data;
+					var arr = eval('(' + t + ')');
+					for(var i = 0; i < arr.length; i++) {
+						//					alert(arr[i].item);
+						var item = "";
+						if(arr[i].item == null) {
+							item = "无"
+						} else {
+							item = arr[i].item;
+						}
+						$("#tbody2").append("<tr style='border-bottom: 1px solid black;'><td style='width: 30px;'>" + arr[i].prdno + "</td><td style='width: 40px;'>" + arr[i].facno + "</td><td style='width: 35px;'>" + item + "</td><td style='width: 35px;'>" + arr[i].sumqty + "</td><td style='width: 75px;'>" + arr[i].recdate1 + "</td><td scope='col'><a href='javascript:void(0)'  onclick='getmingxi(this)''>明细</a></td></tr>");
+					}
+				},
+				error: function(errorThrown) {
+					alert("出错啦~~~~" + errorThrown.statusText);
+				}
+			});
+		}
+	}
+
+	function getmingxi(th_is) {
+		$("#tbody3").empty();
+		$("#tb2").css("display", "none");
+		$("#tb1").css("display", "none");
+		$("#tb3").css("display", "block");
+		//		select * from scan_data where workno=#{workno} and item=#{item} and prdno=#{prdno} and facno=#{facno} and recdate > #{recdate} and recdate <  #{endDate}
+		var workno = document.getElementById("jobNum").value;
+		var recdate1=$(th_is).parent().prev().text()
+		var item = $(th_is).parent().prev().prev().prev().text();
+		var facno = $(th_is).parent().prev().prev().prev().prev().text();
+		var prdno = $(th_is).parent().prev().prev().prev().prev().prev().text();
+		var address = document.getElementById("address").value;
+		//		alert("item"+item+"facno"+facno+"prdno"+prdno+"workno"+workno);
+		var qrparam = {
+			"item": item,
+			"facno": facno,
+			"prdno": prdno,
+			"workno": workno,
+			"recdate1":recdate1
+		}
+//		alert(JSON.stringify(qrparam));
+		$.ajax({
+			type: "post",
+			url: 'http://' + address + '/getmingxi',
+			async: true,
+			data: JSON.stringify(qrparam),
+			contentType: 'application/json',
+			success: function(data) {
+				var t = data;
+				var arr = eval('(' + t + ')');
+				for(var i = 0; i < arr.length; i++) {
+					//					alert(arr[i].item);
+					var item = "";
+					if(arr[i].item == null) {
+						item = "无"
+					} else {
+						item = arr[i].prdmoedl.descn;
+					}
+					//seq
+					$("#tbody3").append("<tr style='border-bottom: 1px solid black;'><td style='width: 50px;'>" + arr[i].prdno + "</td><td style='width: 30px;'>" + arr[i].facno + "</td><td style='width: 40px;'>" + arr[i].bedno + "</td><td style='width: 40px;'>" + arr[i].seq + "</td><td style='width: 75px;'>" + item + "</td><td style='width: 40px;'>" + arr[i].qty + "</td></tr>");
+				}
+			}
+		});
+	}
+</script>
