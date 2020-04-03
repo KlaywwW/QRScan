@@ -1,0 +1,43 @@
+{
+	"index.html": {
+		"resources": [
+			"img/starvincciLOGO.png",
+			"css/bootstrap.min.css",
+			"notNo.html",
+			"haveNo.html",
+			"adminPanel.html",
+			"img/s1.jpg"
+		],
+		"refer": [
+			"notNo.html",
+			"haveNo.html",
+			"adminPanel.html"
+		]
+	},
+	"notNo.html": {
+		"resources": [
+			"js/common.js",
+			"img/x3.svg",
+			"js/jquery.min.js",
+			"img/sao2.svg",
+			"js/immersed.js",
+			"css/bootstrap.min.css"
+		]
+	},
+	"adminPanel.html": {
+		"resources": [
+			"js/jquery.min.js",
+			"css/bootstrap.min.css"
+		]
+	},
+	"haveNo.html": {
+		"resources": [
+			"js/common.js",
+			"img/x3.svg",
+			"js/jquery.min.js",
+			"img/sao2.svg",
+			"js/immersed.js",
+			"css/bootstrap.min.css"
+		]
+	}
+}

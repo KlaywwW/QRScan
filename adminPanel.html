@@ -15,6 +15,7 @@
 
 	<body>
 		<div class="container">
+			<button class="btn btn-block" onclick="back()">返回</button>
 			<div id="main" style="margin-top: 20px;">
 				<div class="input-group">
 					<div class="input-group-prepend">
@@ -29,7 +30,7 @@
 					<select id="prdno" class="form-control">
 
 					</select>
-
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
 				</div>
 				<div class="input-group">
 					<div class="input-group-prepend">
@@ -43,13 +44,8 @@
 					</div>
 					<input type="text" class="form-control" id="prdnum" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 				</div>
-				<table id="tb1" style="font-size: 12px; text-align: center; display: none;">
-					<tr>
-						<th style="width: 40px;">款号</th>
-						<th style="width: 80px;">工序</th>
-						<th style="width: 80px;">生产数</th>
-						<th style="width: 80px;">生产率</th>
-					</tr>
+				<table id="tb1" style="font-size: 12px; display: none;">
+			
 				</table>
 			</div>
 		</div>
@@ -58,6 +54,9 @@
 </html>
 <script type="text/javascript" src="js/jquery.min.js"></script>
 <script type="text/javascript">
+	function back () {
+		
+	}
 	$("#prdno").click(function() {
 		//		var prdno =$("#prdno").val();
 		var path = 'http://' + $("#address").val() + '/getprd';
@@ -69,7 +68,6 @@
 			type: 'post',
 			success: function(data) {
 				$("#prdno").empty();
-				$("#prdno").append("<option value='0'>请选择</option>")
 				var t = data;
 				var arr = eval('(' + t + ')');
 				for(var i = 0; i < arr.length; i++) {
@@ -103,6 +101,8 @@
 
 		})
 		$("#tb1").show();
+		$("#tb1").empty();
+		$("#tb1").append("<tr style='border: 1px solid black;text-align: center;'><th>款号</th><th>工序</th><th>生产数</th><th>生产率</th></tr>")
 		var path2 = 'http://' + $("#address").val() + '/getfac';
 		$.ajax({
 			url: path2,
@@ -121,7 +121,7 @@
 						} else {
 							item = arr[i].prdmoedl.descn;
 						}
-						$("#tb1").append("<tr style='border-bottom: 1px solid black;'><td>" + arr[i].facno + "</td><td>" + item + "</td><td>" + arr[i].qty + "</td><td>" + (arr[i].qty/arr[i].prdn.prdnum)*100 + "%</td></tr>");
+						$("#tb1").append("<tr style='border-bottom: 1px solid black;'><td style='width: 70px;'>" + arr[i].facno + "</td><td style='width: 100px;'>" +  arr[i].prdmoedl.item+"-"+item + "</td><td style='width: 80px;'>" + arr[i].qty + "</td><td>" + ((arr[i].qty/arr[i].prdn.prdnum)*100).toFixed(3) + "%</td></tr>");
 					}
 			},
 			error: function(errorThrown) {

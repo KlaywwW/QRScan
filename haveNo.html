@@ -39,7 +39,7 @@
 				<img src="img/x3.svg" alt="" width="30" height="30">
 			</a>
 			<div style="display: block;" id="main">
-
+<button class="btn btn-block" onclick="window.history.back(-1)">返回</button>
 				<div style="position: relative;width: 100%;">
 					<div id="shu" style="margin-top: 20px">
 					
@@ -82,7 +82,7 @@
 						<table style="font-size: 12px; text-align: center; ">
 							<thead>
 								<tr style="border: 1px solid black;">
-									<th>工号</th>
+									<th>序号</th>
 									<th>制单</th>
 									<th>款号</th>
 									<th>扎号</th>
@@ -424,7 +424,7 @@
 					} else {
 						item = arr[i].prdmoedl.descn;
 					}
-					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td scope='col'>" + arr[i].workno + "</td><td scope='col'>" + arr[i].prdno + "</td><td scope='col'>" + arr[i].facno + "</td><td scope='col'>" + arr[i].seq + "</td><td scope='col'>" + item + "</td><td scope='col'>" + arr[i].qty + "</td></tr>");
+					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td scope='col'>" + (i+1) + "</td><td scope='col'>" + arr[i].prdno + "</td><td scope='col'>" + arr[i].facno + "</td><td scope='col'>" + arr[i].seq + "</td><td scope='col'>" + item + "</td><td scope='col'>" + arr[i].qty + "</td></tr>");
 				}
 			},
 			error: function(errorThrown) {
