@@ -21,13 +21,21 @@
 			"js/jquery.min.js",
 			"img/sao2.svg",
 			"js/immersed.js",
-			"css/bootstrap.min.css"
+			"css/bootstrap.min.css",
+			"index.html"
+		],
+		"refer": [
+			"index.html"
 		]
 	},
 	"adminPanel.html": {
 		"resources": [
 			"js/jquery.min.js",
-			"css/bootstrap.min.css"
+			"css/bootstrap.min.css",
+			"index.html"
+		],
+		"refer": [
+			"index.html"
 		]
 	},
 	"haveNo.html": {
@@ -37,7 +45,11 @@
 			"js/jquery.min.js",
 			"img/sao2.svg",
 			"js/immersed.js",
-			"css/bootstrap.min.css"
+			"css/bootstrap.min.css",
+			"index.html"
+		],
+		"refer": [
+			"index.html"
 		]
 	}
 }

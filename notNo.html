@@ -45,10 +45,10 @@
 			top: 55%;
 			left: 15%;*/
 			margin-top: 31%;
-			margin-left: 19%;
+			margin-left: 3%;
 			background-color: white;
-			width: 250px;
-			height: 350px;
+			width: 330px;
+			height: 450px;
 			overflow: auto;
 			/*border: 1px solid red;*/
 		}
@@ -57,6 +57,7 @@
 	<body>
 
 		<div class="container">
+			<a href="javascript:void(0)" class="btn btn-block" onclick="back()">返回</button>
 			<div id="bcid">
 			</div>
 
@@ -67,7 +68,6 @@
 				<img src="img/x3.svg" alt="" width="30" height="30">
 			</a>
 			<div style="display: block;" id="main">
-<button class="btn btn-block" onclick="window.history.back()">返回</button>
 				<div style="position: relative;width: 100%;">
 					<div id="shu" style="margin-top: 20px">
 						<div class="input-group">
@@ -194,6 +194,9 @@
 <script src="js/jquery.min.js"></script>
 <script type="text/javascript">
 
+	function back() {
+		window.history.back();
+	}
 	var scan2=null;
 	function facscan(){
 		if(window.plus) {
@@ -300,7 +303,7 @@
 						var t = data;
 						var arr = eval('(' + t + ')');
 						for(var i = 0; i < arr.length; i++) {
-							$("#ii").append("<div class='row'><input type='checkbox' name='item' id='item"+arr[i].item+"' value='"+arr[i].item+"' class='col-4' /><label for='item"+arr[i].item+"' class='col-8'>"+ arr[i].item+"-"+arr[i].descn+"</label></div>");
+							$("#ii").append("<div class='row'><input type='checkbox' name='item' id='item"+arr[i].item+"' value='"+arr[i].item+"' class='col-2' /><label for='item"+arr[i].item+"' class='col-8'>"+ arr[i].item+"-"+arr[i].descn+"</label></div>");
 						}
 					}
 				},error:function() {
@@ -336,8 +339,8 @@
 	function startRecognize() {
 		var address = document.getElementById("address").value;
 		var jobNum = document.getElementById("jobNum").value;
-//		var item =document.getElementById("item").value;
-		if(address == "" || address == null || jobNum == "" || jobNum == null) {
+		var item =document.getElementById("item").value;
+		if(address == "" || address == null || jobNum == "" || jobNum == null||item==""||item==null) {
 			alert("请填写完整信息后扫描");
 		} else {
 			if(window.plus) {
@@ -396,7 +399,7 @@
 			}
 			
 			var splitstr = result.split("@");
-			if($("#facno").val()==splitstr[1]){
+			 if($("#facno").val()==splitstr[1]){
 				addinfo(result);
 			}else{
 				alert("款号不正确！");
@@ -421,7 +424,7 @@
 						break;
 				}
 				var splitstr = result.split("@");
-			if($("#facno").val()==splitstr[1]){
+				if($("#facno").val()==splitstr[1]){
 				addinfo(result);
 			}else{
 				alert("款号不正确！");
@@ -639,7 +642,7 @@
 					} else {
 						item = arr[i].prdmoedl.descn;
 					}
-					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td>" + (i+1) + "</td><td>" + arr[i].prdno + "</td><td>" + arr[i].facno + "</td><td>" + arr[i].seq + "</td><td style='width: 90px;'>" + item + "</td><td>" + arr[i].qty + "</td></tr>");
+					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td>" + (i+1) + "</td><td>" + arr[i].prdno + "</td><td>" + arr[i].facno + "</td><td>" + arr[i].seq + "</td><td style='width: 90px;'>" + arr[i].item+"-"+item + "</td><td>" + arr[i].qty + "</td></tr>");
 				}
 			},
 			error: function(errorThrown) {

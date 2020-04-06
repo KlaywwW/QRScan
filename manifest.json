@@ -243,7 +243,8 @@
 					"js/jquery.min.js",
 					"img/sao2.svg",
 					"js/immersed.js",
-					"css/bootstrap.min.css"
+					"css/bootstrap.min.css",
+					"index.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -251,7 +252,8 @@
 			"adminPanel.html": {
 				"resources": [
 					"js/jquery.min.js",
-					"css/bootstrap.min.css"
+					"css/bootstrap.min.css",
+					"index.html"
 				],
 				"refer": [],
 				"priority": 0
@@ -263,7 +265,8 @@
 					"js/jquery.min.js",
 					"img/sao2.svg",
 					"js/immersed.js",
-					"css/bootstrap.min.css"
+					"css/bootstrap.min.css",
+					"index.html"
 				],
 				"refer": [],
 				"priority": 0

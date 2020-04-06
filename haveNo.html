@@ -32,6 +32,8 @@
 	<body>
 
 		<div class="container">
+			<a href="javascript:void(0)" class="btn btn-block" onclick="back()">返回</button>
+				
 			<div id="bcid">
 			</div>
 
@@ -39,7 +41,7 @@
 				<img src="img/x3.svg" alt="" width="30" height="30">
 			</a>
 			<div style="display: block;" id="main">
-<button class="btn btn-block" onclick="window.history.back(-1)">返回</button>
+				
 				<div style="position: relative;width: 100%;">
 					<div id="shu" style="margin-top: 20px">
 					
@@ -142,6 +144,9 @@
 <script src="js/jquery.min.js"></script>
 <script type="text/javascript">
 	var scan = null;
+	function back() {
+		window.history.back();
+	}
 
 	function startRecognize() {
 		var address = document.getElementById("address").value;
