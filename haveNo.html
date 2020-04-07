@@ -32,7 +32,7 @@
 	<body>
 
 		<div class="container">
-			<a href="javascript:void(0)" class="btn btn-block" onclick="back()">返回</button>
+			
 				
 			<div id="bcid">
 			</div>
@@ -75,8 +75,9 @@
 							<input type="date" id="endtime" class="form-control">
 						</div>
 						<div class="row">
-							<button type="button" class="btn btn-primary btn-lg btn-block col-5 offset-1" onclick="getinfoBydate()">汇总查询</button>
-							<button type="button" class="btn btn-primary btn-lg btn-block col-5" onclick="getinfo()" style="margin-top: 0px;">当日扫码明细</button>
+							<button type="button" class="btn btn-primary btn-block col-3 offset-1" onclick="getinfoBydate()">汇总查询</button>
+							<button type="button" class="btn btn-primary  btn-block col-4" onclick="getinfo()" style="margin-top: 0px;">当日扫码明细</button>
+							<button href="javascript:void(0)" class="btn btn-block btn-warning col-2 offset-1" onclick="back()">返回</button>
 						</div>
 					</div>
 					
@@ -147,7 +148,26 @@
 	function back() {
 		window.history.back();
 	}
-
+		$("#jobNum").blur(function(){
+		var addre = document.getElementById("address").value
+		var jobNum=$("#jobNum").val();
+		var path = 'http://' + addre + '/getname';
+		$.ajax({
+				url: path,
+				data: jobNum,
+				async: false,
+				contentType: 'application/json',
+				type: 'post',
+				success: function(data) {
+//					alert(data);
+					$("#name").val(data);
+				},
+				error: function(errorThrown) {
+					alert("出错啦~~~~" + errorThrown.statusText);
+				}
+	
+			})
+	});
 	function startRecognize() {
 		var address = document.getElementById("address").value;
 		var jobNum = document.getElementById("jobNum").value;
@@ -209,13 +229,11 @@
 					text = 'EAN8: ';
 					break;
 			}
+//			alert(result);
+//			var splitstr = result.split("@");
 			
-			var splitstr = result.split("@");
-			if($("#facno").val()==splitstr[1]){
-				addinfo(result);
-			}else{
-				alert("款号不正确！");
-			}
+			addinfo(result);
+			
 			scan.close();
 //			addinfo(result);
 			//获取数据
@@ -235,12 +253,9 @@
 						text = 'EAN8: ';
 						break;
 				}
-				var splitstr = result.split("@");
-			if($("#facno").val()==splitstr[1]){
+//				var splitstr = result.split("@");
+//			alert(result);
 				addinfo(result);
-			}else{
-				alert("款号不正确！");
-			}
 				scan.close();
 			}, false);
 
@@ -267,6 +282,8 @@
 				var value2 = plus.storage.getItem("jobNum");
 				document.getElementById("jobNum").value = value2;
 
+				var value3 = plus.storage.getItem("name");
+				document.getElementById("name").value = value3;
 			}
 		} else {
 			document.addEventListener('plusready', function() {
@@ -279,6 +296,8 @@
 //					var key2 = plus.storage.key(1);
 					var value2 = plus.storage.getItem("jobNum");
 					document.getElementById("jobNum").value = value2;
+					var value3 = plus.storage.getItem("name");
+				document.getElementById("name").value = value3;
 
 				}
 			}, false);
@@ -292,6 +311,7 @@
 			clearAllItem();
 			plus.storage.setItem("address", document.getElementById("address").value);
 			plus.storage.setItem("jobNum", document.getElementById("jobNum").value);
+			plus.storage.setItem("name", document.getElementById("name").value);
 			var length = plus.storage.getLength();
 			alert("设置保存成功");
 		} else {
@@ -300,6 +320,7 @@
 				console.log(document.getElementById("address").value);
 				plus.storage.setItem("address", document.getElementById("address").value);
 				plus.storage.setItem("jobNum", document.getElementById("jobNum").value);
+				plus.storage.setItem("name", document.getElementById("name").value);
 				var length = plus.storage.getLength();
 				alert("设置保存成功");
 			}, false);
@@ -380,8 +401,8 @@
 			var addre = document.getElementById("address").value
 			var qrParam = {
 				"strs": res,
-				"jobNum": document.getElementById("jobNum").value,
-				"facnostr":document.getElementById("item").value
+				"jobNum": document.getElementById("jobNum").value
+//				"facnostr":document.getElementById("item").value
 			}
 			//
 			var path = 'http://' + addre + '/home';
@@ -429,7 +450,7 @@
 					} else {
 						item = arr[i].prdmoedl.descn;
 					}
-					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td scope='col'>" + (i+1) + "</td><td scope='col'>" + arr[i].prdno + "</td><td scope='col'>" + arr[i].facno + "</td><td scope='col'>" + arr[i].seq + "</td><td scope='col'>" + item + "</td><td scope='col'>" + arr[i].qty + "</td></tr>");
+					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td>" + (i+1) + "</td><td>" + arr[i].prdno + "</td><td>" + arr[i].facno + "</td><td>" + arr[i].seq + "</td><td style='width: 90px;'>" +arr[i].item+"-"+item+ "</td><td>" + arr[i].qty + "</td></tr>");
 				}
 			},
 			error: function(errorThrown) {
@@ -450,8 +471,8 @@
 		var jobNum = document.getElementById("jobNum").value;
 		if(starttime > endtime) {
 			alert("起始时间不能超过结束时间")
-		} else if(starttime == endtime) {
-			alert("请输入两个不同的时间")
+		}else if(starttime==null||starttime==""||endtime==""||endtime==null){
+			alert("请输入时间段")
 		} else if(jobNum == null || jobNum == "") {
 			alert("请输入工号再查询");
 		} else {
@@ -478,7 +499,7 @@
 						} else {
 							item = arr[i].item;
 						}
-						$("#tbody2").append("<tr style='border-bottom: 1px solid black;'><td style='width: 30px;'>" + arr[i].prdno + "</td><td style='width: 40px;'>" + arr[i].facno + "</td><td style='width: 35px;'>" + item + "</td><td style='width: 35px;'>" + arr[i].sumqty + "</td><td style='width: 75px;'>" + arr[i].recdate1 + "</td><td scope='col'><a href='javascript:void(0)'  onclick='getmingxi(this)''>明细</a></td></tr>");
+						$("#tbody2").append("<tr style='border-bottom: 1px solid black;'><td style='width: 30px;'>" + arr[i].prdno + "</td><td style='width: 40px;'>" + arr[i].facno + "</td><td style='width: 35px;'>" +item+ "</td><td style='width: 35px;'>" + arr[i].sumqty + "</td><td style='width: 75px;'>" + arr[i].recdate1 + "</td><td scope='col'><a href='javascript:void(0)'  onclick='getmingxi(this)''>明细</a></td></tr>");
 					}
 				},
 				error: function(errorThrown) {
@@ -527,7 +548,7 @@
 						item = arr[i].prdmoedl.descn;
 					}
 					//seq
-					$("#tbody3").append("<tr style='border-bottom: 1px solid black;'><td style='width: 50px;'>" + arr[i].prdno + "</td><td style='width: 30px;'>" + arr[i].facno + "</td><td style='width: 40px;'>" + arr[i].bedno + "</td><td style='width: 40px;'>" + arr[i].seq + "</td><td style='width: 75px;'>" + item + "</td><td style='width: 40px;'>" + arr[i].qty + "</td></tr>");
+					$("#tbody3").append("<tr style='border-bottom: 1px solid black;'><td style='width: 50px;'>" + arr[i].prdno + "</td><td style='width: 30px;'>" + arr[i].facno + "</td><td style='width: 40px;'>" + arr[i].bedno + "</td><td style='width: 40px;'>" + arr[i].seq + "</td><td style='width: 75px;'>" +item+ "</td><td style='width: 40px;'>" + arr[i].qty + "</td></tr>");
 				}
 			}
 		});
