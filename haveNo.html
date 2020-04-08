@@ -82,12 +82,13 @@
 					</div>
 					
 					<div id="tb1" style="display: none; margin-top: 10px;">
-						<table style="font-size: 12px; text-align: center; ">
+						<table style="font-size: 12px;">
 							<thead>
-								<tr style="border: 1px solid black;">
+								<tr style="border: 1px solid black; text-align: center;">
 									<th>序号</th>
 									<th>制单</th>
 									<th>款号</th>
+									<th>床号</th>
 									<th>扎号</th>
 									<th>工序</th>
 									<th>数量</th>
@@ -450,7 +451,7 @@
 					} else {
 						item = arr[i].prdmoedl.descn;
 					}
-					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td>" + (i+1) + "</td><td>" + arr[i].prdno + "</td><td>" + arr[i].facno + "</td><td>" + arr[i].seq + "</td><td style='width: 90px;'>" +arr[i].item+"-"+item+ "</td><td>" + arr[i].qty + "</td></tr>");
+					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td style='text-align: center;'>" + (i + 1) + "</td><td style='text-align: center;'>" + arr[i].prdno + "</td><td style='text-align: center;'>" + arr[i].facno + "</td><td style='text-align: center;'>" + arr[i].bedno + "</td><td style='text-align: center;'>" + arr[i].seq + "</td><td style='width: 90px;'>" + arr[i].item + "-" + item + "</td><td style='text-align: center;'>" + arr[i].qty + "</td></tr>");
 				}
 			},
 			error: function(errorThrown) {

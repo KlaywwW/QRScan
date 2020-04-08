@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+		<title></title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<style type="text/css">
+			#bcid {
+			height: 100%;
+			width: 100%;
+			position: absolute;
+			top: -10px;
+			left: 0px;
+			text-align: center;
+		}
+		</style>
+	</head>
+
+	<body>
+		<div class="container">
+			<a href="javascript:void(0)" class="btn btn-block btn-warning" onclick="back()">返回</a>
+			<div id="bcid">
+			</div>
+
+			<a href="javascript:void(0)" style="position: fixed;top: 30px; right: 10px;display: none;" onclick="cancel()" id="close">
+				<img src="img/x3.svg" alt="" width="30" height="30">
+			</a>
+			<div id="main">
+				<div class="input-group">
+					<div class="input-group-prepend">
+						<span class="input-group-text" id="inputGroup-sizing-default">地址</span>
+					</div>
+					<input type="text" class="form-control" id="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+				</div>
+				<button type="button" class="btn btn-secondary btn-block col-5" onclick="startRecognize()" style="margin-top: 0px;">
+					<img src="img/sao2.svg" alt="" width="30" height="35" style="margin-right: 10px;"><span>扫一扫</span></button>
+			</div>
+			<div id="tb1" style="display: none; margin-top: 10px;">
+				<table style="font-size: 12px;">
+					<thead>
+						<tr style="border: 1px solid black; text-align: center;">
+							<th>工序</th>
+							<th>工序名称</th>
+							<th>数量</th>
+							<th>人员</th>
+							<th>日期</th>
+						</tr>
+					</thead>
+					<tbody id="tbody1">
+
+					</tbody>
+				</table>
+
+			</div>
+		</div>
+	</body>
+
+</html>
+<script src="js/common.js"></script>
+<script src="js/immersed.js"></script>
+<script src="js/jquery.min.js"></script>
+<script type="text/javascript">
+	function back() {
+		window.history.back();
+	}
+		function cancel() {
+		if(window.plus) {
+			scan.cancel();
+			scan.close();
+		} else {
+			document.addEventListener('plusready', function() {
+				scan.cancel();
+				scan.close();
+			}, false);
+		}
+		document.getElementById("close").style.display = "none";
+		document.getElementById("main").style.display = "block";
+	}
+		var scan = null;
+	function startRecognize() {
+		var address = document.getElementById("address").value;
+
+		if(address == "" || address == null) {
+			alert("请填写完整信息后扫描");
+		} else {
+			if(window.plus) {
+				var filter;
+				//自定义的扫描控件样式  
+				var styles = {
+
+				}
+				//扫描控件构造  
+				scan = new plus.barcode.Barcode('bcid', filter, styles);
+				scan.onmarked = onmarked; //扫描成功
+				scan.onerror = onerror; //扫描错误
+			
+				scan.start(); //开始
+			} else {
+				document.addEventListener('plusready', function() {
+					var filter;
+					//自定义的扫描控件样式  
+					var styles = {
+						scanbarColor: '#1DA7FF',
+						position: 'static',
+						frameColor: '#1DA7FF'
+					}
+					//扫描控件构造  
+					scan = new plus.barcode.Barcode('bcid', filter, styles);
+					scan.onmarked = onmarked; //扫描成功
+					scan.onerror = onerror; //扫描错误
+
+					scan.start(); //开始
+				}, false);
+
+			}
+			document.getElementById("main").style.display = "none";
+			document.getElementById("close").style.display = "block";
+		}
+	};
+
+	function onerror(e) { //错误弹框
+		alert(e);
+	};
+	function onmarked(type, result) { //这个是扫描二维码的回调函数，type是扫描二维码回调的类型
+		var addre = document.getElementById("address").value
+		if(window.plus) {
+			var text = '';
+			switch(type) { //QR,EAN13,EAN8都是二维码的一种编码格式,result是返回的结果
+				case plus.barcode.QR:
+					text = 'QR: ';
+					break;
+				case plus.barcode.EAN13:
+					text = 'EAN13: ';
+					break;
+				case plus.barcode.EAN8:
+					text = 'EAN8: ';
+					break;
+			}
+			alert(result);
+//			var splitstr = result.split("@");
+			
+			getinfo(result);
+			
+			scan.close();
+//			addinfo(result);
+			//获取数据
+//			getinfo();
+
+		} else {
+			document.addEventListener('plusready', function() {
+				var text = '';
+				switch(type) { //QR,EAN13,EAN8都是二维码的一种编码格式,result是返回的结果
+					case plus.barcode.QR:
+						text = 'QR: ';
+						break;
+					case plus.barcode.EAN13:
+						text = 'EAN13: ';
+						break;
+					case plus.barcode.EAN8:
+						text = 'EAN8: ';
+						break;
+				}
+//				var splitstr = result.split("@");
+//			alert(result);
+				getinfo(result);
+				scan.close();
+			}, false);
+
+		}
+		document.getElementById("close").style.display = "none";
+		document.getElementById("main").style.display = "block";
+		//		alert(result);
+		//		alert();
+
+	};
+
+	onload = function() {
+		// 方法体
+		if(window.plus) {
+			var itemLength = plus.storage.getLength();
+			if(itemLength > 0) {
+				var value1 = plus.storage.getItem("address");
+				document.getElementById("address").value = value1;
+			}
+		} else {
+			document.addEventListener('plusready', function() {
+				var itemLength = plus.storage.getLength();
+				if(itemLength > 0) {
+					var value1 = plus.storage.getItem("address");
+					document.getElementById("address").value = value1;
+				}
+			}, false);
+		}
+	}
+	function getinfo(res) {
+			var addre = document.getElementById("address").value
+			var path = 'http://' + addre + '/queryseq';
+			$.ajax({
+				url: path,
+				data: JSON.stringify(res),
+				async: false,
+				contentType: 'application/json',
+				type: 'post',
+				success: function(data) {
+					
+				},
+				error: function(errorThrown) {
+					alert("出错啦~~~~" + errorThrown.statusText);
+				}
+	
+			})
+		}
+</script>

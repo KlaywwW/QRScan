@@ -6,12 +6,14 @@
 			"notNo.html",
 			"haveNo.html",
 			"adminPanel.html",
-			"img/s1.jpg"
+			"img/s1.jpg",
+			"seqquery.html"
 		],
 		"refer": [
 			"notNo.html",
 			"haveNo.html",
-			"adminPanel.html"
+			"adminPanel.html",
+			"seqquery.html"
 		]
 	},
 	"notNo.html": {
@@ -47,6 +49,20 @@
 			"js/immersed.js",
 			"css/bootstrap.min.css",
 			"index.html"
+		],
+		"refer": [
+			"index.html"
+		]
+	},
+	"seqquery.html": {
+		"resources": [
+			"js/common.js",
+			"img/x3.svg",
+			"img/sao2.svg",
+			"js/immersed.js",
+			"index.html",
+			"js/jquery.min.js",
+			"css/bootstrap.min.css"
 		],
 		"refer": [
 			"index.html"
