@@ -8,44 +8,66 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 		<style type="text/css">
 			#bcid {
-			height: 100%;
-			width: 100%;
-			position: absolute;
-			top: -10px;
-			left: 0px;
-			text-align: center;
-		}
+				height: 100%;
+				width: 100%;
+				position: absolute;
+				top: -10px;
+				left: 0px;
+				text-align: center;
+			}
 		</style>
 	</head>
 
 	<body>
 		<div class="container">
-			<a href="javascript:void(0)" class="btn btn-block btn-warning" onclick="back()">返回</a>
+
 			<div id="bcid">
 			</div>
 
 			<a href="javascript:void(0)" style="position: fixed;top: 30px; right: 10px;display: none;" onclick="cancel()" id="close">
 				<img src="img/x3.svg" alt="" width="30" height="30">
 			</a>
-			<div id="main">
+			<div id="main" style="margin-top: 10px;">
 				<div class="input-group">
 					<div class="input-group-prepend">
 						<span class="input-group-text" id="inputGroup-sizing-default">地址</span>
 					</div>
 					<input type="text" class="form-control" id="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 				</div>
-				<button type="button" class="btn btn-secondary btn-block col-5" onclick="startRecognize()" style="margin-top: 0px;">
+				<div class="row">
+					<a href="javascript:void(0)" class="btn btn-block btn-warning col-5 offset-1" style="padding: 10px;" onclick="back()">返回</a>
+					<button type="button" class="btn btn-secondary btn-block col-5" onclick="startRecognize()" style="margin-top: 0px;">
 					<img src="img/sao2.svg" alt="" width="30" height="35" style="margin-right: 10px;"><span>扫一扫</span></button>
+				</div>
+				<div>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="inputGroup-sizing-default">制单号</span>
+						</div>
+						<input type="text" class="form-control" id="prdno" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly>
+						
+					</div>
+					<div class="input-group">
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="inputGroup-sizing-default">床号</span>
+						</div>
+						<input type="text" class="form-control" id="bedno" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly>
+						<div class="input-group-prepend">
+							<span class="input-group-text" id="inputGroup-sizing-default">扎号</span>
+						</div>
+						<input type="text" class="form-control" id="seq" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly>
+					</div>
+				</div>
 			</div>
-			<div id="tb1" style="display: none; margin-top: 10px;">
+			<div id="tb1" style="display: block; margin-top: 10px;">
 				<table style="font-size: 12px;">
 					<thead>
 						<tr style="border: 1px solid black; text-align: center;">
 							<th>工序</th>
 							<th>工序名称</th>
 							<th>数量</th>
-							<th>人员</th>
 							<th>日期</th>
+							<th>姓名</th>
 						</tr>
 					</thead>
 					<tbody id="tbody1">
@@ -65,7 +87,8 @@
 	function back() {
 		window.history.back();
 	}
-		function cancel() {
+
+	function cancel() {
 		if(window.plus) {
 			scan.cancel();
 			scan.close();
@@ -78,7 +101,8 @@
 		document.getElementById("close").style.display = "none";
 		document.getElementById("main").style.display = "block";
 	}
-		var scan = null;
+	var scan = null;
+
 	function startRecognize() {
 		var address = document.getElementById("address").value;
 
@@ -95,7 +119,7 @@
 				scan = new plus.barcode.Barcode('bcid', filter, styles);
 				scan.onmarked = onmarked; //扫描成功
 				scan.onerror = onerror; //扫描错误
-			
+
 				scan.start(); //开始
 			} else {
 				document.addEventListener('plusready', function() {
@@ -123,6 +147,7 @@
 	function onerror(e) { //错误弹框
 		alert(e);
 	};
+
 	function onmarked(type, result) { //这个是扫描二维码的回调函数，type是扫描二维码回调的类型
 		var addre = document.getElementById("address").value
 		if(window.plus) {
@@ -138,15 +163,10 @@
 					text = 'EAN8: ';
 					break;
 			}
-			alert(result);
-//			var splitstr = result.split("@");
-			
+
 			getinfo(result);
-			
+
 			scan.close();
-//			addinfo(result);
-			//获取数据
-//			getinfo();
 
 		} else {
 			document.addEventListener('plusready', function() {
@@ -162,8 +182,8 @@
 						text = 'EAN8: ';
 						break;
 				}
-//				var splitstr = result.split("@");
-//			alert(result);
+				//				var splitstr = result.split("@");
+				//			alert(result);
 				getinfo(result);
 				scan.close();
 			}, false);
@@ -171,8 +191,6 @@
 		}
 		document.getElementById("close").style.display = "none";
 		document.getElementById("main").style.display = "block";
-		//		alert(result);
-		//		alert();
 
 	};
 
@@ -194,22 +212,41 @@
 			}, false);
 		}
 	}
+
 	function getinfo(res) {
-			var addre = document.getElementById("address").value
-			var path = 'http://' + addre + '/queryseq';
-			$.ajax({
-				url: path,
-				data: JSON.stringify(res),
-				async: false,
-				contentType: 'application/json',
-				type: 'post',
-				success: function(data) {
-					
-				},
-				error: function(errorThrown) {
-					alert("出错啦~~~~" + errorThrown.statusText);
+		var addre = document.getElementById("address").value
+		var path = 'http://' + addre + '/queryseq';
+		$("#tbody1").empty();
+		var str=res.split("@");
+		$("#prdno").val(str[0])
+		$("#seq").val(str[3])
+		$("#bedno").val(str[2])
+		//		alert(res)
+		$.ajax({
+			url: path,
+			data: JSON.stringify(res),
+			async: false,
+			contentType: 'application/json',
+			type: 'post',
+			success: function(data) {
+//				alert(data);
+				var t = data;
+				var arr = eval('(' + t + ')');
+				for(var i = 0; i < arr.length; i++) {
+					//					alert(arr[i].item);
+					var item = "";
+					if(arr[i].prdmoedl.item == null) {
+						item = "无"
+					} else {
+						item = arr[i].prdmoedl.descn;
+					}
+					$("#tbody1").append("<tr style='border-bottom: 1px solid black;'><td style='text-align: center;'>" + arr[i].prdmoedl.item + "</td><td style='width: 122px;'>" + item + "</td><td style='text-align: center;'>" + arr[i].qty + "</td><td style='width: 80px;text-align: center;'>" + arr[i].recdate + "</td><td style='text-align: center; width: 70px;'>" + arr[i].emp.name + "</td></tr>");
 				}
-	
-			})
-		}
+			},
+			error: function(errorThrown) {
+				alert("出错啦~~~~" + errorThrown.statusText);
+			}
+
+		})
+	}
 </script>

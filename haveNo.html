@@ -500,7 +500,7 @@
 						} else {
 							item = arr[i].item;
 						}
-						$("#tbody2").append("<tr style='border-bottom: 1px solid black;'><td style='width: 30px;'>" + arr[i].prdno + "</td><td style='width: 40px;'>" + arr[i].facno + "</td><td style='width: 35px;'>" +item+ "</td><td style='width: 35px;'>" + arr[i].sumqty + "</td><td style='width: 75px;'>" + arr[i].recdate1 + "</td><td scope='col'><a href='javascript:void(0)'  onclick='getmingxi(this)''>明细</a></td></tr>");
+						$("#tbody2").append("<tr style='border-bottom: 1px solid black;'><td style='width: 30px;'>" + arr[i].prdno + "</td><td style='width: 40px;'>" + arr[i].facno + "</td><td style='width: 35px;'>" + item + "</td><td style='width: 35px;'>" + arr[i].sumqty + "</td><td style='width: 75px;'>" + arr[i].recdate1 + "</td><td scope='col'><a href='javascript:void(0)'  onclick='getmingxi(this)''>明细</a></td></tr>");
 					}
 				},
 				error: function(errorThrown) {
@@ -549,7 +549,7 @@
 						item = arr[i].prdmoedl.descn;
 					}
 					//seq
-					$("#tbody3").append("<tr style='border-bottom: 1px solid black;'><td style='width: 50px;'>" + arr[i].prdno + "</td><td style='width: 30px;'>" + arr[i].facno + "</td><td style='width: 40px;'>" + arr[i].bedno + "</td><td style='width: 40px;'>" + arr[i].seq + "</td><td style='width: 75px;'>" +item+ "</td><td style='width: 40px;'>" + arr[i].qty + "</td></tr>");
+					$("#tbody3").append("<tr style='border-bottom: 1px solid black;'><td style='width: 50px;'>" + arr[i].prdno + "</td><td style='width: 30px;'>" + arr[i].facno + "</td><td style='width: 40px;'>" + arr[i].bedno + "</td><td style='width: 40px;'>" + arr[i].seq + "</td><td style='width: 75px;'>" + item + "</td><td style='width: 40px;'>" + arr[i].qty + "</td></tr>");
 				}
 			}
 		});
