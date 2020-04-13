@@ -9,10 +9,10 @@
 	</head>
 	<style type="text/css">
 		#bcid {
-			height: 100%;
+			height: 93%;
 			width: 100%;
 			position: absolute;
-			top: -10px;
+			top: 7%;
 			left: 0px;
 			text-align: center;
 		}
@@ -60,10 +60,10 @@
 			<div id="bcid">
 			</div>
 
-			<a href="javascript:void(0)" style="position: fixed;top: 30px; right: 10px;display: none;" onclick="cancel()" id="close">
+			<a href="javascript:void(0)" style="position: fixed;top: 10px; right: 10px;display: none;" onclick="cancel()" id="close">
 				<img src="img/x3.svg" alt="" width="30" height="30">
 			</a>
-			<a href="javascript:void(0)" style="position: fixed;top: 30px; right: 10px;display: none;" onclick="cancel2()" id="close2">
+			<a href="javascript:void(0)" style="position: fixed;top: 10px; right: 10px;display: none;" onclick="cancel2()" id="close2">
 				<img src="img/x3.svg" alt="" width="30" height="30">
 			</a>
 			<div style="display: block;" id="main">
@@ -272,7 +272,12 @@
 			}, false);
 
 		}
-		$("#facno").val(result);
+		
+		var str=result.split("@");
+		// $("#prdno").val(str[0])
+		// $("#seq").val(str[3])
+		// $("#bedno").val(str[1])
+		$("#facno").val(str[1]);
 		document.getElementById("close2").style.display = "none";
 		document.getElementById("main").style.display = "block";
 
@@ -528,7 +533,7 @@
 				for(var i = 0; i < itemLength; i++) {
 					var key = plus.storage.key(i);
 					var value = plus.storage.getItem(key);
-					alert("key:" + key + "-->value:" + value);
+					alert("key:" + key + "-->value:" + value); 
 				}
 			}, false);
 		}
@@ -699,7 +704,7 @@
 						} else {
 							item = arr[i].item;
 						}
-						$("#tbody2").append("<tr style='border-bottom: 1px solid black;'><td style='width: 30px;'>" + arr[i].prdno + "</td><td style='width: 40px;'>" + arr[i].facno + "</td><td style='width: 35px;'>" + item + "</td><td style='width: 35px;'>" + arr[i].sumqty + "</td><td style='width: 75px;'>" + arr[i].recdate1 + "</td><td scope='col'><a href='javascript:void(0)'  onclick='getmingxi(this)''>明细</a></td></tr>");
+						$("#tbody2").append("<tr style='border-bottom: 1px solid black;'><td style='width: 110px;'>" + arr[i].prdno + "</td><td style='width: 40px;'>" + arr[i].facno + "</td><td style='width: 35px;'>" + item + "</td><td style='width: 35px;'>" + arr[i].sumqty + "</td><td style='width: 75px;'>" + arr[i].recdate1 + "</td><td scope='col'><a href='javascript:void(0)'  onclick='getmingxi(this)''>明细</a></td></tr>");
 					}
 				},
 				error: function(errorThrown) {
@@ -748,7 +753,7 @@
 						item = arr[i].prdmoedl.descn;
 					}
 					//seq
-					$("#tbody3").append("<tr style='border-bottom: 1px solid black;'><td style='width: 50px;'>" + arr[i].prdno + "</td><td style='width: 30px;'>" + arr[i].facno + "</td><td style='width: 40px;'>" + arr[i].bedno + "</td><td style='width: 40px;'>" + arr[i].seq + "</td><td style='width: 75px;'>" + item + "</td><td style='width: 40px;'>" + arr[i].qty + "</td></tr>");
+					$("#tbody3").append("<tr style='border-bottom: 1px solid black;'><td style='width: 110px;'>" + arr[i].prdno + "</td><td style='width: 30px;'>" + arr[i].facno + "</td><td style='width: 40px;'>" + arr[i].bedno + "</td><td style='width: 40px;'>" + arr[i].seq + "</td><td style='width: 75px;'>" + item + "</td><td style='width: 40px;'>" + arr[i].qty + "</td></tr>");
 				}
 			}
 		});

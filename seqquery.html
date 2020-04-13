@@ -8,10 +8,10 @@
 		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
 		<style type="text/css">
 			#bcid {
-				height: 100%;
+				height: 93%;
 				width: 100%;
 				position: absolute;
-				top: -10px;
+				top: 5%;
 				left: 0px;
 				text-align: center;
 			}
@@ -24,7 +24,7 @@
 			<div id="bcid">
 			</div>
 
-			<a href="javascript:void(0)" style="position: fixed;top: 30px; right: 10px;display: none;" onclick="cancel()" id="close">
+			<a href="javascript:void(0)" style="position: absolute;top: 10px; right: 10px;display: none;" onclick="cancel()" id="close">
 				<img src="img/x3.svg" alt="" width="30" height="30">
 			</a>
 			<div id="main" style="margin-top: 10px;">
@@ -58,24 +58,25 @@
 						<input type="text" class="form-control" id="seq" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly>
 					</div>
 				</div>
+				<div id="tb1" style="display: block; margin-top: 10px;">
+					<table style="font-size: 12px;">
+						<thead>
+							<tr style="border: 1px solid black; text-align: center;">
+								<th>工序</th>
+								<th>工序名称</th>
+								<th>数量</th>
+								<th>日期</th>
+								<th>姓名</th>
+							</tr>
+						</thead>
+						<tbody id="tbody1">
+				
+						</tbody>
+					</table>
+				
+				</div>
 			</div>
-			<div id="tb1" style="display: block; margin-top: 10px;">
-				<table style="font-size: 12px;">
-					<thead>
-						<tr style="border: 1px solid black; text-align: center;">
-							<th>工序</th>
-							<th>工序名称</th>
-							<th>数量</th>
-							<th>日期</th>
-							<th>姓名</th>
-						</tr>
-					</thead>
-					<tbody id="tbody1">
-
-					</tbody>
-				</table>
-
-			</div>
+			
 		</div>
 	</body>
 
@@ -244,7 +245,7 @@
 				}
 			},
 			error: function(errorThrown) {
-				alert("出错啦~~~~" + errorThrown.statusText);
+				alert("出错啦" + errorThrown.statusText);
 			}
 
 		})
