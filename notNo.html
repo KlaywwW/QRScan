@@ -86,17 +86,18 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="inputGroup-sizing-default">地址</span>
 							</div>
-							<input type="text" class="form-control" id="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+							<input type="text" class="form-control" id="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="true">
+							<button id="grant" class="btn btn-primary">授权</button>
 						</div>
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="inputGroup-sizing-default">工號</span>
 							</div>
-							<input type="text" class="form-control" id="jobNum" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+							<input type="text" class="form-control" id="jobNum" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="true">
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="inputGroup-sizing-default">姓名</span>
 							</div>
-							<input type="text" class="form-control" id="name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+							<input type="text" class="form-control" id="name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="true">
 						</div>
 
 						<div class="row">
@@ -193,6 +194,15 @@
 <script src="js/immersed.js"></script>
 <script src="js/jquery.min.js"></script>
 <script type="text/javascript">
+
+	$("#grant").click(function(){
+		var info = prompt("请输入密码:");
+		if(info=="yd888"){
+			$("#address").attr("readonly",false);
+			$("#jobNum").attr("readonly",false);
+			$("#name").attr("readonly",false);
+		}
+	})
 	
 	$("#name").blur(function(){
 		// alert("aaa");
