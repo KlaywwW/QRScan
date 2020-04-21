@@ -394,7 +394,8 @@
 		var address = document.getElementById("address").value;
 		var jobNum = document.getElementById("jobNum").value;
 		var item = document.getElementById("item").value;
-		if (address == "" || address == null || jobNum == "" || jobNum == null || item == "" || item == null) {
+		var name=document.getElementById("name").value;
+		if (address == "" || address == null || jobNum == "" || jobNum == null || item == "" || item == null|| name=="" ||name==null) {
 			alert("请填写完整信息后扫描");
 		} else {
 			if (window.plus) {
@@ -657,6 +658,7 @@
 		var qrParam = {
 			"strs": res,
 			"jobNum": document.getElementById("jobNum").value,
+			"name":document.getElementById("name").value,
 			"facnostr": document.getElementById("item").value
 		}
 		//
