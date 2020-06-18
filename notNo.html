@@ -86,18 +86,18 @@
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="inputGroup-sizing-default">地址</span>
 							</div>
-							<input type="text" class="form-control" id="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="true">
+							<input type="text" class="form-control" id="address" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 							<button id="grant" class="btn btn-primary">授权</button>
 						</div>
 						<div class="input-group">
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="inputGroup-sizing-default">工號</span>
 							</div>
-							<input type="text" class="form-control" id="jobNum" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="true">
+							<input type="text" class="form-control" id="jobNum" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 							<div class="input-group-prepend">
 								<span class="input-group-text" id="inputGroup-sizing-default">姓名</span>
 							</div>
-							<input type="text" class="form-control" id="name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" readonly="true">
+							<input type="text" class="form-control" id="name" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
 						</div>
 
 						<div class="row">
@@ -195,6 +195,7 @@
 <script src="js/jquery.min.js"></script>
 <script type="text/javascript">
 
+
 	$("#grant").click(function(){
 		var info = prompt("请输入密码:");
 		if(info=="yd888"){
@@ -245,6 +246,17 @@
 	function back() {
 		window.history.back();
 	}
+	$(function(){
+		if($("#address").val()==null||$("#address").val()==""){
+			$("#address").attr("readonly",true);
+		}
+		if($("#jobNum").val()==null||$("#jobNum").val()==""){
+			$("#jobNum").attr("readonly",true);
+		}
+		if($("#name").val()==null||$("#name").val()==""){
+			$("#name").attr("readonly",true);
+		}
+	})
 	var scan2 = null;
 
 	function facscan() {
